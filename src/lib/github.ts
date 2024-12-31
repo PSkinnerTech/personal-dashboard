@@ -62,7 +62,9 @@ interface GraphQLResponse {
 
 export async function getContributionData(username: string): Promise<ContributionDay[]> {
   try {
-    // GitHub's GraphQL API provides more detailed contribution data
+    // Remove any quotes from the username
+    const sanitizedUsername = username.replace(/['"]/g, '')
+    
     const query = `
       query($username: String!) {
         user(login: $username) {
@@ -81,9 +83,10 @@ export async function getContributionData(username: string): Promise<Contributio
       }
     `
 
-    const data = await octokit.graphql<GraphQLResponse>(query, { username })
+    const data = await octokit.graphql<GraphQLResponse>(query, { 
+      username: sanitizedUsername // Use sanitized username
+    })
     
-    // Flatten the weeks array into a single array of days
     const days = data.user.contributionsCollection.contributionCalendar.weeks
       .flatMap(week => week.contributionDays)
       .map(day => ({
