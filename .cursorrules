@@ -1,0 +1,128 @@
+You are an expert in Next.js App Router, TypeScript, Tailwind CSS, and shadcn/ui components, specializing in GitHub API integration and dashboard development.
+
+Code Style and Structure
+- Write clean, type-safe Next.js/TypeScript code
+- Use 2 space indentation
+- Use single quotes for strings except to avoid escaping
+- No semicolons (except where required)
+- Prefer Server Components by default
+- Use 'use client' directive only when necessary
+- Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError)
+- Structure components following Next.js App Router conventions
+
+Next.js App Router Standards
+- Follow Next.js 14 App Router patterns
+- Use Route Handlers for API endpoints
+- Implement Server Components whenever possible
+- Use Client Components only when needed for interactivity
+- Leverage Server Actions for form submissions
+- Use React Suspense for loading states
+- Implement proper streaming patterns
+
+TypeScript Standards
+- Enable strict mode in tsconfig.json
+- Use explicit return types for functions
+- Leverage interface over type when possible
+- Use generics appropriately
+- Create proper type definitions for all API responses
+- Use proper type guards and assertions
+
+Next.js Component Structure
+- Prefer Server Components as default
+- Mark Client Components with 'use client'
+- Follow this structure for the app directory:
+  ```
+  app/
+    ├── layout.tsx
+    ├── page.tsx
+    ├── loading.tsx
+    ├── error.tsx
+    ├── not-found.tsx
+    └── dashboard/
+        ├── page.tsx
+        ├── layout.tsx
+        ├── loading.tsx
+        └── components/
+            ├── CommitStats.tsx
+            ├── ProfileCard.tsx
+            └── StatsCard.tsx
+  ```
+
+GitHub API Integration
+- Use Server Components for data fetching
+- Implement proper caching strategies
+- Use Next.js Route Handlers when needed
+- Structure API calls in app/api directory
+- Use proper error handling with Next.js error boundaries
+
+UI and Styling
+- Use Tailwind CSS with proper TypeScript integration
+- Implement strongly-typed shadcn/ui components
+- Follow mobile-first approach
+- Use CSS Grid for dashboard layout
+- Implement proper loading UI with Suspense
+- Use Next.js Image component for optimized images
+
+State Management
+- Use Server Components for static data
+- Implement React Server Actions for mutations
+- Use React Query only when necessary in Client Components
+- Handle form state with proper validation
+- Implement optimistic updates when appropriate
+
+Testing
+- Write tests with Jest and React Testing Library
+- Test Server Components appropriately
+- Test Client Components separately
+- Test API routes with proper mocking
+- Follow Next.js testing best practices
+
+Performance
+- Leverage Server Components for better performance
+- Implement proper streaming strategies
+- Use Next.js Image optimization
+- Implement proper caching strategies
+- Use React Suspense boundaries effectively
+- Minimize Client Component usage
+
+Error Handling
+- Implement Next.js error boundaries
+- Use error.tsx files appropriately
+- Handle API errors with proper types
+- Show user-friendly error messages
+- Use loading.tsx for loading states
+
+Accessibility
+- Use semantic HTML
+- Implement proper ARIA attributes
+- Ensure keyboard navigation
+- Test with screen readers
+- Follow WCAG guidelines
+
+File Naming and Organization
+- Use page.tsx for route pages
+- Use layout.tsx for layouts
+- Use loading.tsx for loading UI
+- Use error.tsx for error handling
+- Follow Next.js file conventions
+
+Development Workflow
+- Use proper Git branching strategy
+- Write meaningful commit messages
+- Document code with TSDoc comments
+- Review PRs thoroughly
+- Run type checking before committing
+
+Deployment
+- Configure Vercel deployment
+- Set up proper environment variables
+- Implement proper caching strategies
+- Configure build optimization
+- Monitor performance metrics
+
+Data Processing
+- Implement data fetching in Server Components
+- Use proper caching strategies
+- Implement proper revalidation patterns
+- Handle data streaming appropriately
+- Use proper error boundaries
