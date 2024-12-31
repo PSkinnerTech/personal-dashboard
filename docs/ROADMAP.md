@@ -1,4 +1,4 @@
-# GitHub Stats Dashboard Roadmap
+# Developer Stats Dashboard Roadmap
 
 ## 1. Project Setup
 - [x] Create new Next.js 14 app with App Router and TypeScript
@@ -6,6 +6,7 @@
 - [x] Install and configure TailwindCSS
 - [x] Install and configure shadcn/ui components
 - [x] Set up GitHub API authentication with type-safe env variables
+- [ ] Set up YouTube Data API v3 credentials
 - [ ] Configure ESLint and Prettier for TypeScript/Next.js
 
 ## 2. Project Structure
@@ -17,7 +18,9 @@ app/
 ├── error.tsx
 ├── not-found.tsx
 ├── api/
-│   └── github/
+│   ├── github/
+│   │   └── route.ts
+│   └── youtube/
 │       └── route.ts
 └── dashboard/
     ├── page.tsx
@@ -25,17 +28,25 @@ app/
     ├── loading.tsx
     ├── error.tsx
     └── components/
-        ├── CommitStats.tsx
-        ├── ProfileCard.tsx
-        └── StatsCard.tsx
+        ├── github/
+        │   ├── CommitStats.tsx
+        │   ├── ProfileCard.tsx
+        │   └── StatsCard.tsx
+        └── youtube/
+            ├── ChannelStats.tsx
+            ├── ViewsChart.tsx
+            └── SubscriberCard.tsx
 lib/
 ├── types/
 │   ├── github.ts
+│   ├── youtube.ts
 │   └── index.ts
 ├── actions/
-│   └── github.ts
+│   ├── github.ts
+│   └── youtube.ts
 └── utils/
-    └── dateUtils.ts
+    ├── dateUtils.ts
+    └── statsUtils.ts
 ```
 
 ## 3. Type Definitions
@@ -45,12 +56,14 @@ lib/
 - [x] Define component prop interfaces
 - [ ] Create utility type helpers
 - [ ] Define Server Action types
+- [x] Create YouTube API response types
 
 ### API Types
 - [x] Generate types from GitHub GraphQL schema
 - [x] Define API response interfaces
 - [ ] Create type guards for API responses
 - [x] Define error types
+- [x] Define YouTube API interfaces
 
 ## 4. Core Features
 
@@ -65,6 +78,17 @@ lib/
 - [ ] Implement proper caching strategies
 - [ ] Set up revalidation patterns
 
+### YouTube API Integration
+- [x] Set up YouTube Data API client
+- [ ] Implement OAuth2 authentication flow
+- [x] Create data fetching functions for:
+  - [x] Channel statistics
+  - [x] Subscriber count
+  - [x] View counts
+  - [x] Video performance metrics
+- [ ] Handle API quota limitations
+- [ ] Implement caching for YouTube data
+
 ### Dashboard Components
 - [x] Create Server Component Dashboard layout
 - [ ] Implement ProfileCard as Server Component
@@ -76,12 +100,19 @@ lib/
 - [x] Implement StatsCard with loading states
   - Typed average calculations
   - Type-safe data display
+- [x] Implement YouTube Components
+  - [x] Channel statistics display
+  - [ ] Subscriber growth chart
+  - [x] View count metrics
+  - [x] Video performance cards
 
 ## 5. Data Processing
 - [x] Implement server-side date filtering utilities
 - [x] Create strongly-typed commit counting functions
 - [x] Add type-safe average calculations
 - [ ] Implement proper caching strategies
+- [ ] Add YouTube metrics calculations
+- [ ] Implement analytics comparison features
 
 ## 6. UI/UX Design
 - [x] Design responsive layout using Tailwind
@@ -90,6 +121,8 @@ lib/
 - [x] Implement loading.tsx states
 - [x] Create error.tsx handlers
 - [ ] Set up not-found.tsx pages
+- [x] Design integrated GitHub/YouTube dashboard layout
+- [ ] Create unified stats view
 
 ## 7. Performance Optimization
 - [ ] Implement proper Server Components
@@ -98,6 +131,8 @@ lib/
 - [ ] Implement proper revalidation
 - [ ] Optimize image loading
 - [ ] Monitor Core Web Vitals
+- [ ] Optimize YouTube API quota usage
+- [ ] Implement efficient data refresh patterns
 
 ## 8. Nice-to-Have Features
 - [ ] Add type-safe date range selector
@@ -105,12 +140,16 @@ lib/
 - [ ] Add commit trend visualization
 - [ ] Type-safe theme switching
 - [ ] Add real-time updates
+- [ ] Add YouTube video scheduling features
+- [ ] Implement cross-platform analytics
+- [ ] Add export functionality for stats
 
 ## 9. Testing & Deployment
 - [ ] Write unit tests for utilities
 - [ ] Test Server Components
 - [ ] Test Client Components
 - [ ] Test Route Handlers
+- [ ] Test YouTube API integration
 - [ ] Set up CI/CD pipeline
 - [ ] Configure Vercel deployment
 - [ ] Set up monitoring
@@ -121,9 +160,12 @@ lib/
 - Consider edge caching strategies
 - Ensure proper error boundaries
 - Monitor performance metrics
+- Handle YouTube API quota limits
+- Implement proper OAuth2 flow
+- Consider data retention policies
 
 ## Dependencies
-- next ^14
+- next ^15
 - typescript
 - @types/react
 - @types/node
@@ -133,3 +175,5 @@ lib/
 - graphql-request
 - date-fns
 - zod (for validation)
+- googleapis (for YouTube API)
+- @googleapis/youtube
