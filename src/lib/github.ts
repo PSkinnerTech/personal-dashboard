@@ -103,3 +103,80 @@ export async function getContributionData(username: string): Promise<Contributio
     throw error
   }
 } 
+
+interface GitHubUser {
+  login: string
+  name: string
+  avatarUrl: string
+  bio: string
+  followers: number
+  following: number
+  location: string
+  company: string
+  twitterUsername: string | null
+}
+
+interface GraphQLUserResponse {
+  user: {
+    login: string
+    name: string
+    avatarUrl: string
+    bio: string
+    followers: {
+      totalCount: number
+    }
+    following: {
+      totalCount: number
+    }
+    location: string
+    company: string
+    twitterUsername: string | null
+  }
+}
+
+export async function getUserProfile(username: string): Promise<GitHubUser> {
+  try {
+    const sanitizedUsername = username.replace(/['"]/g, '')
+    
+    const query = `
+      query($username: String!) {
+        user(login: $username) {
+          login
+          name
+          avatarUrl
+          bio
+          followers {
+            totalCount
+          }
+          following {
+            totalCount
+          }
+          location
+          company
+          twitterUsername
+        }
+      }
+    `
+
+    const data = await octokit.graphql<GraphQLUserResponse>(query, { username: sanitizedUsername })
+    const user = data.user
+
+    return {
+      login: user.login,
+      name: user.name,
+      avatarUrl: user.avatarUrl,
+      bio: user.bio,
+      followers: user.followers.totalCount,
+      following: user.following.totalCount,
+      location: user.location,
+      company: user.company,
+      twitterUsername: user.twitterUsername
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('GitHub API Error:', error)
+      throw new Error(`Failed to fetch user profile: ${error.message}`)
+    }
+    throw error
+  }
+} 
