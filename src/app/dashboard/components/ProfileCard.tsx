@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import Image from 'next/image'
-import { MapPin, Building2, Twitter } from 'lucide-react'
+import { MapPin, Building2 } from 'lucide-react'
+import { XLogo } from '@/components/icons/x-logo'
+import Link from 'next/link'
 
 interface ProfileCardProps {
   user: {
@@ -30,7 +32,14 @@ export function ProfileCard({ user }: ProfileCardProps) {
         </div>
         <div>
           <h2 className="text-xl font-bold">{user.name}</h2>
-          <p className="text-sm text-muted-foreground">@{user.login}</p>
+          <Link 
+            href={`https://github.com/${user.login}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-muted-foreground hover:underline"
+          >
+            @{user.login}
+          </Link>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -62,8 +71,15 @@ export function ProfileCard({ user }: ProfileCardProps) {
           )}
           {user.twitterUsername && (
             <div className="flex items-center gap-2">
-              <Twitter className="h-4 w-4" />
-              @{user.twitterUsername}
+              <XLogo className="h-4 w-4" />
+              <Link
+                href={`https://x.com/${user.twitterUsername}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                @{user.twitterUsername}
+              </Link>
             </div>
           )}
         </div>

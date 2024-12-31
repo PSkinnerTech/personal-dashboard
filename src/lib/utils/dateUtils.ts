@@ -4,6 +4,7 @@ export function getDateRanges() {
   const now = new Date()
   const sevenDaysAgo = subDays(now, 7)
   const thirtyDaysAgo = subDays(now, 30)
+  const yearAgo = subDays(now, 365)
 
   return {
     sevenDays: {
@@ -12,6 +13,10 @@ export function getDateRanges() {
     },
     thirtyDays: {
       start: startOfDay(thirtyDaysAgo),
+      end: endOfDay(now)
+    },
+    yearDays: {
+      start: startOfDay(yearAgo),
       end: endOfDay(now)
     }
   }

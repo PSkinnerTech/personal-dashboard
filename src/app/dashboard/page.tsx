@@ -1,43 +1,115 @@
-import { getCommits, getContributionData, getUserProfile } from '@/lib/github'
+import { getCommits, getContributionData, getUserProfile, getIssues, getPullRequests, getCodeReviews } from '@/lib/github'
 import { getDateRanges } from '@/lib/utils/dateUtils'
 import { StatsCard } from './components/StatsCard'
 import { ContributionGraph } from './components/ContributionGraph'
 import { ProfileCard } from './components/ProfileCard'
-import { Suspense } from 'react'
 
 async function DashboardStats() {
-  const { sevenDays, thirtyDays } = getDateRanges()
+  const { sevenDays, thirtyDays, yearDays } = getDateRanges()
   
-  const [sevenDayCommits, thirtyDayCommits, contributionData, userProfile] = await Promise.all([
+  const [
+    sevenDayCommits,
+    thirtyDayCommits,
+    yearCommits,
+    sevenDayIssues,
+    thirtyDayIssues,
+    yearIssues,
+    sevenDayPRs,
+    thirtyDayPRs,
+    yearPRs,
+    sevenDayReviews,
+    thirtyDayReviews,
+    yearReviews,
+    contributionData,
+    userProfile
+  ] = await Promise.all([
     getCommits(process.env.GITHUB_USERNAME!, sevenDays.start, sevenDays.end),
     getCommits(process.env.GITHUB_USERNAME!, thirtyDays.start, thirtyDays.end),
+    getCommits(process.env.GITHUB_USERNAME!, yearDays.start, yearDays.end),
+    getIssues(process.env.GITHUB_USERNAME!, sevenDays.start, sevenDays.end),
+    getIssues(process.env.GITHUB_USERNAME!, thirtyDays.start, thirtyDays.end),
+    getIssues(process.env.GITHUB_USERNAME!, yearDays.start, yearDays.end),
+    getPullRequests(process.env.GITHUB_USERNAME!, sevenDays.start, sevenDays.end),
+    getPullRequests(process.env.GITHUB_USERNAME!, thirtyDays.start, thirtyDays.end),
+    getPullRequests(process.env.GITHUB_USERNAME!, yearDays.start, yearDays.end),
+    getCodeReviews(process.env.GITHUB_USERNAME!, sevenDays.start, sevenDays.end),
+    getCodeReviews(process.env.GITHUB_USERNAME!, thirtyDays.start, thirtyDays.end),
+    getCodeReviews(process.env.GITHUB_USERNAME!, yearDays.start, yearDays.end),
     getContributionData(process.env.GITHUB_USERNAME!),
     getUserProfile(process.env.GITHUB_USERNAME!)
   ])
-
-  const sevenDayTotal = sevenDayCommits.length
-  const thirtyDayTotal = thirtyDayCommits.length
-  
-  const sevenDayAvg = (sevenDayTotal / 7).toFixed(1)
-  const thirtyDayAvg = (thirtyDayTotal / 30).toFixed(1)
 
   return (
     <div className="space-y-6">
       <div className="grid gap-6 md:grid-cols-[300px,1fr]">
         <ProfileCard user={userProfile} />
         <div className="space-y-6">
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-[80px,1fr,1fr,1fr,1fr] md:grid-cols-[120px,1fr,1fr,1fr,1fr] gap-x-2 md:gap-x-4">
+            <div /> {/* Empty cell for time period labels */}
+            <h3 className="text-base md:text-lg font-medium text-center">Commits</h3>
+            <h3 className="text-base md:text-lg font-medium text-center">Issues</h3>
+            <h3 className="text-base md:text-lg font-medium text-center">PRs</h3>
+            <h3 className="text-base md:text-lg font-medium text-center">Reviews</h3>
+
+            <h4 className="text-xs md:text-sm font-medium self-center whitespace-nowrap">Last Year</h4>
             <StatsCard
-              title="Last 7 Days"
-              value={sevenDayTotal}
-              subtitle={`${sevenDayAvg} commits per day`}
+              value={yearCommits}
+              subtitle={`${(yearCommits / 365).toFixed(1)} per day`}
             />
             <StatsCard
-              title="Last 30 Days"
-              value={thirtyDayTotal}
-              subtitle={`${thirtyDayAvg} commits per day`}
+              value={yearIssues}
+              subtitle={`${(yearIssues / 365).toFixed(1)} per day`}
+            />
+            <StatsCard
+              value={yearPRs}
+              subtitle={`${(yearPRs / 365).toFixed(1)} per day`}
+            />
+            <StatsCard
+              value={yearReviews}
+              subtitle={`${(yearReviews / 365).toFixed(1)} per day`}
+            />
+
+            <div className="col-span-5 h-4 md:h-6" />
+
+            <h4 className="text-xs md:text-sm font-medium self-center whitespace-nowrap">Last 30d</h4>
+            <StatsCard
+              value={thirtyDayCommits}
+              subtitle={`${(thirtyDayCommits / 30).toFixed(1)} per day`}
+            />
+            <StatsCard
+              value={thirtyDayIssues}
+              subtitle={`${(thirtyDayIssues / 30).toFixed(1)} per day`}
+            />
+            <StatsCard
+              value={thirtyDayPRs}
+              subtitle={`${(thirtyDayPRs / 30).toFixed(1)} per day`}
+            />
+            <StatsCard
+              value={thirtyDayReviews}
+              subtitle={`${(thirtyDayReviews / 30).toFixed(1)} per day`}
+            />
+
+            <div className="col-span-5 h-4 md:h-6" />
+
+            <h4 className="text-xs md:text-sm font-medium self-center whitespace-nowrap">Last 7d</h4>
+            <StatsCard
+              value={sevenDayCommits}
+              subtitle={`${(sevenDayCommits / 7).toFixed(1)} per day`}
+            />
+            <StatsCard
+              value={sevenDayIssues}
+              subtitle={`${(sevenDayIssues / 7).toFixed(1)} per day`}
+            />
+            <StatsCard
+              value={sevenDayPRs}
+              subtitle={`${(sevenDayPRs / 7).toFixed(1)} per day`}
+            />
+            <StatsCard
+              value={sevenDayReviews}
+              subtitle={`${(sevenDayReviews / 7).toFixed(1)} per day`}
             />
           </div>
+          
           <ContributionGraph data={contributionData} />
         </div>
       </div>
@@ -45,10 +117,4 @@ async function DashboardStats() {
   )
 }
 
-export default function DashboardPage() {
-  return (
-    <Suspense fallback={<div>Loading stats...</div>}>
-      <DashboardStats />
-    </Suspense>
-  )
-} 
+export default DashboardStats 
