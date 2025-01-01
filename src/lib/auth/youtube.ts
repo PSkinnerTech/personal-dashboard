@@ -2,7 +2,9 @@ import { OAuth2Client, Credentials } from 'google-auth-library'
 
 const baseUrl = process.env.VERCEL_URL 
   ? `https://${process.env.VERCEL_URL}`
-  : process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+  : process.env.NODE_ENV === 'production'
+    ? 'https://dashboard-pskinnertech.vercel.app'
+    : 'http://localhost:3000'
 
 const oauth2Client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
