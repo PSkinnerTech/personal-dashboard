@@ -9,7 +9,7 @@ export function ChannelStats({ stats }: ChannelStatsProps) {
   return (
     <Card>
       <CardHeader>
-        <h3 className="text-lg font-semibold">YouTube Channel Stats</h3>
+        <h3 className="text-lg font-semibold text-center">YouTube Channel Stats</h3>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-3 gap-4">

@@ -10,7 +10,7 @@ export default function Home() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-center text-muted-foreground">
-            Connect your YouTube account to view your analytics alongside your GitHub stats.
+            Dashboard for personal projects.
           </p>
           <div className="flex justify-center">
             <YouTubeSignInButton />

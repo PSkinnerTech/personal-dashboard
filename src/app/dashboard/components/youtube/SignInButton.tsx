@@ -8,15 +8,16 @@ export function YouTubeSignInButton() {
 
   const handleSignIn = async () => {
     try {
-      router.push('/api/auth/youtube')
+      console.log('Navigating to dashboard...')
+      await router.push('/dashboard')
     } catch (error) {
-      console.error('Failed to sign in:', error)
+      console.error('Navigation error:', error)
     }
   }
 
   return (
     <Button onClick={handleSignIn} variant="outline">
-      Connect YouTube Account
+      View Dashboard
     </Button>
   )
 } 
