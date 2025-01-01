@@ -79,7 +79,6 @@ export async function getRecentVideos(channelId: string): Promise<YouTubeVideo[]
 
 export async function getSubscriberGrowth(channelId: string, days: number = 30): Promise<YouTubeAnalytics['subscribers']> {
   try {
-    const endDate = new Date()
     const startDate = new Date()
     startDate.setDate(startDate.getDate() - days)
 

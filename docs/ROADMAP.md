@@ -85,7 +85,7 @@ lib/
     - [x] Subscriber count
     - [x] Total views
     - [x] Video count
-  - [ ] Per-Video Analytics
+  - [x] Per-Video Analytics
     - [x] View count
     - [x] Like count
     - [x] Comment count
@@ -96,7 +96,12 @@ lib/
     - [ ] Views per video trend
     - [ ] Upload time analysis
     - [ ] Performance trends
-- [ ] Implement OAuth2 authentication flow
+- [x] Implement OAuth2 authentication flow
+  - [x] Set up Google OAuth2 client
+  - [x] Implement auth callback handler
+  - [x] Add token storage in cookies
+  - [x] Add middleware protection
+  - [ ] Add token refresh logic
 - [ ] Handle API quota limitations
 - [ ] Implement caching for YouTube data
 
@@ -105,8 +110,8 @@ lib/
 - [x] Implement YouTube Components
   - [x] Channel statistics display
   - [x] Recent videos list
-  - [ ] Analytics Components
-    - [ ] Subscriber growth chart
+  - [x] Analytics Components
+    - [x] Subscriber growth chart
     - [ ] Views trend graph
     - [ ] Upload time heatmap
     - [ ] Performance metrics cards

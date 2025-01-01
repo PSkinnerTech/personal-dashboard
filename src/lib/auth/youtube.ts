@@ -1,4 +1,4 @@
-import { OAuth2Client } from 'google-auth-library'
+import { OAuth2Client, Credentials } from 'google-auth-library'
 
 const oauth2Client = new OAuth2Client(
     process.env.GOOGLE_CLIENT_ID,
@@ -22,7 +22,7 @@ export async function getTokens(code: string) {
   return tokens
 }
 
-export function setCredentials(tokens: any) {
+export function setCredentials(tokens: Credentials) {
   oauth2Client.setCredentials(tokens)
   return oauth2Client
 } 
