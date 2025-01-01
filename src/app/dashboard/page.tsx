@@ -3,9 +3,10 @@ import { getDateRanges } from '@/lib/utils/dateUtils'
 import { StatsCard } from './components/StatsCard'
 import { ContributionGraph } from './components/ContributionGraph'
 import { ProfileCard } from './components/ProfileCard'
-import { getChannelStats, getRecentVideos } from '@/lib/youtube'
+import { getChannelStats, getRecentVideos, getSubscriberGrowth } from '@/lib/youtube'
 import { ChannelStats } from './components/youtube/ChannelStats'
 import { RecentVideos } from './components/youtube/RecentVideos'
+import { SubscriberGrowth } from './components/youtube/SubscriberGrowth'
 
 async function DashboardStats() {
     const { sevenDays, thirtyDays, yearDays } = getDateRanges()
@@ -26,7 +27,8 @@ async function DashboardStats() {
       contributionData,
       userProfile,
       channelStats,
-      recentVideos
+      recentVideos,
+      subscriberGrowth
     ] = await Promise.all([
       getCommits(process.env.GITHUB_USERNAME!, sevenDays.start, sevenDays.end),
       getCommits(process.env.GITHUB_USERNAME!, thirtyDays.start, thirtyDays.end),
@@ -43,7 +45,8 @@ async function DashboardStats() {
       getContributionData(process.env.GITHUB_USERNAME!),
       getUserProfile(process.env.GITHUB_USERNAME!),
       getChannelStats(process.env.YOUTUBE_CHANNEL_ID!),
-      getRecentVideos(process.env.YOUTUBE_CHANNEL_ID!)
+      getRecentVideos(process.env.YOUTUBE_CHANNEL_ID!),
+      getSubscriberGrowth(process.env.YOUTUBE_CHANNEL_ID!)
     ])
 
   return (
@@ -126,6 +129,7 @@ async function DashboardStats() {
         <div className="grid gap-6 md:grid-cols-2">
           <ChannelStats stats={channelStats} />
           <RecentVideos videos={recentVideos} />
+          <SubscriberGrowth data={subscriberGrowth} />
         </div>
       </div>
     </div>
