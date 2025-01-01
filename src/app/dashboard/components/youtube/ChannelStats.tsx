@@ -13,19 +13,19 @@ export function ChannelStats({ stats }: ChannelStatsProps) {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-3 gap-4">
-          <div className="space-y-1">
+          <div className="space-y-1 text-center">
             <p className="text-2xl font-bold">
               {stats.subscriberCount.toLocaleString()}
             </p>
             <p className="text-sm text-muted-foreground">Subscribers</p>
           </div>
-          <div className="space-y-1">
+          <div className="space-y-1 text-center">
             <p className="text-2xl font-bold">
               {stats.viewCount.toLocaleString()}
             </p>
             <p className="text-sm text-muted-foreground">Total Views</p>
           </div>
-          <div className="space-y-1">
+          <div className="space-y-1 text-center">
             <p className="text-2xl font-bold">
               {stats.videoCount.toLocaleString()}
             </p>
