@@ -105,6 +105,26 @@ lib/
 - [ ] Handle API quota limitations
 - [ ] Implement caching for YouTube data
 
+### Hashnode API Integration
+- [ ] Set up Hashnode GraphQL client
+- [ ] Create data fetching functions for:
+  - [ ] User Profile
+    - [ ] Total posts count
+    - [ ] Total views
+    - [ ] Total reactions
+    - [ ] Followers count
+  - [ ] Blog Statistics
+    - [ ] Publication details
+    - [ ] Newsletter subscribers
+    - [ ] Blog engagement metrics
+  - [ ] Recent Posts
+    - [ ] View counts
+    - [ ] Reaction counts
+    - [ ] Comment counts
+    - [ ] Reading time
+- [ ] Implement proper caching strategies
+- [ ] Set up revalidation patterns
+
 ### Dashboard Components
 - [x] Create Server Component Dashboard layout
 - [x] Implement YouTube Components
@@ -119,6 +139,19 @@ lib/
     - [ ] Top videos by views
     - [ ] Watch time analysis
     - [ ] Engagement metrics
+    - [ ] Growth indicators
+- [ ] Implement Hashnode Components
+  - [ ] Blog statistics display
+  - [ ] Recent posts list
+  - [ ] Analytics Components
+    - [ ] Post performance chart
+    - [ ] Engagement metrics
+    - [ ] Reader demographics
+    - [ ] Traffic sources
+  - [ ] Content Performance Dashboard
+    - [ ] Top posts by views
+    - [ ] Engagement analysis
+    - [ ] Series/tags performance
     - [ ] Growth indicators
 
 ## 5. Data Processing
@@ -135,6 +168,15 @@ lib/
   - [ ] YouTube data caching
   - [ ] Analytics caching
 - [ ] Implement analytics comparison features
+- [ ] Hashnode Data Processing
+  - [ ] Calculate engagement rates
+  - [ ] Analyze post performance
+  - [ ] Track reader retention
+  - [ ] Generate content insights
+- [ ] Cross-platform analytics
+  - [ ] Blog post impact on GitHub activity
+  - [ ] Content correlation with YouTube growth
+  - [ ] Developer advocacy metrics
 
 ## 6. UI/UX Design
 - [x] Design responsive layout using Tailwind
@@ -225,3 +267,5 @@ lib/
 - zod (for validation)
 - googleapis (for YouTube API)
 - @googleapis/youtube
+- graphql-request (for Hashnode API)
+- @graphql-codegen/cli (for type generation)
