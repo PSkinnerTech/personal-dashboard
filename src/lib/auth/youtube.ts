@@ -1,10 +1,14 @@
 import { OAuth2Client, Credentials } from 'google-auth-library'
 
+const baseUrl = process.env.VERCEL_URL 
+  ? `https://${process.env.VERCEL_URL}`
+  : process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+
 const oauth2Client = new OAuth2Client(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/youtube/callback`
-  )
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  `${baseUrl}/api/auth/youtube/callback`
+)
 
 export function getAuthUrl() {
   return oauth2Client.generateAuthUrl({

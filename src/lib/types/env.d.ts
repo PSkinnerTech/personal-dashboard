@@ -9,6 +9,7 @@ declare global {
         GOOGLE_CLIENT_SECRET: string
         NEXT_PUBLIC_APP_URL: string
         NODE_ENV: 'development' | 'production' | 'test'
+        VERCEL_URL?: string
       }
     }
   }
