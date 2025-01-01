@@ -4,6 +4,7 @@ import { HashnodePost } from '@/lib/types/hashnode'
 import { Card, CardContent } from '@/components/ui/card'
 import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface RecentPostsProps {
   posts: HashnodePost[]
@@ -18,11 +19,21 @@ export function RecentPosts({ posts }: RecentPostsProps) {
           <Card key={post._id}>
             <CardContent className="p-4">
               <Link 
-                href={`https://hashnode.com/${post.slug}`}
+                href={`https://blog.patrickskinner.tech/${post.slug}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="space-y-2"
               >
+                {post.coverImage && (
+                  <div className="relative w-full aspect-video mb-4">
+                    <Image
+                      src={post.coverImage.url}
+                      alt={post.title}
+                      fill
+                      className="rounded-lg object-cover"
+                    />
+                  </div>
+                )}
                 <h4 className="font-medium line-clamp-2 hover:underline">
                   {post.title}
                 </h4>

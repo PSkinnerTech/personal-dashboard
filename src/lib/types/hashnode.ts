@@ -8,6 +8,12 @@ export interface HashnodePost {
   responseCount: number
   views: number
   readTime: number
+  coverImage: {
+    url: string
+    isPortrait: boolean
+    attribution?: string
+    photographer?: string
+  }
 }
 
 export interface HashnodeStats {

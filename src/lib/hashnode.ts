@@ -97,30 +97,36 @@ interface HashnodePostEdge {
     responseCount: number
     views: number
     readTimeInMinutes: number
+    coverImage: {
+      url: string
+      isPortrait: boolean
+      attribution?: string
+      photographer?: string
+    }
   }
 }
 
 export async function getRecentPosts(username: string): Promise<HashnodePost[]> {
   const query = `
-    query GetUserPosts($username: String!) {
-      user(username: $username) {
-        publications(first: 1) {
+    query Publication {
+      publication(host: "blog.patrickskinner.tech") {
+        posts(first: 10) {
           edges {
             node {
-              posts(first: 10) {
-                edges {
-                  node {
-                    id
-                    title
-                    brief
-                    slug
-                    publishedAt
-                    reactionCount
-                    responseCount
-                    views
-                    readTimeInMinutes
-                  }
-                }
+              id
+              title
+              brief
+              slug
+              publishedAt
+              reactionCount
+              responseCount
+              views
+              readTimeInMinutes
+              coverImage {
+                url
+                isPortrait
+                attribution
+                photographer
               }
             }
           }
@@ -134,26 +140,22 @@ export async function getRecentPosts(username: string): Promise<HashnodePost[]> 
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': process.env.HASHNODE_ACCESS_TOKEN
+        'Authorization': `Bearer ${process.env.HASHNODE_ACCESS_TOKEN}`
       } as HeadersInit,
-      body: JSON.stringify({
-        query,
-        variables: { username },
-      }),
+      body: JSON.stringify({ query }),
     })
 
     const data = await response.json()
-    console.log('Hashnode API Response:', data)
 
     if (data.errors) {
       throw new Error(data.errors[0]?.message || 'Error fetching Hashnode posts')
     }
 
-    if (!data.data?.user?.publications?.edges?.[0]?.node?.posts?.edges) {
+    if (!data.data?.publication?.posts?.edges) {
       throw new Error('Invalid response format from Hashnode API')
     }
 
-    return data.data.user.publications.edges[0].node.posts.edges.map((edge: HashnodePostEdge) => ({
+    return data.data.publication.posts.edges.map((edge: HashnodePostEdge) => ({
       _id: edge.node.id,
       title: edge.node.title,
       brief: edge.node.brief,
@@ -162,7 +164,13 @@ export async function getRecentPosts(username: string): Promise<HashnodePost[]> 
       totalReactions: edge.node.reactionCount,
       responseCount: edge.node.responseCount,
       views: edge.node.views,
-      readTime: edge.node.readTimeInMinutes
+      readTime: edge.node.readTimeInMinutes,
+      coverImage: {
+        url: edge.node.coverImage?.url,
+        isPortrait: edge.node.coverImage?.isPortrait || false,
+        attribution: edge.node.coverImage?.attribution,
+        photographer: edge.node.coverImage?.photographer
+      }
     }))
   } catch (error) {
     console.error('Hashnode API Error:', error)
