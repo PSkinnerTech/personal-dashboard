@@ -7,10 +7,15 @@ import { ProfileCard } from './components/ProfileCard'
 import { getChannelStats, getRecentVideos } from '@/lib/youtube'
 import { ChannelStats } from './components/youtube/ChannelStats'
 import { RecentVideos } from './components/youtube/RecentVideos'
+import { HashnodeStats } from './components/hashnode/HashnodeStats'
+import { RecentPosts } from './components/hashnode/RecentPosts'
+import { getRecentPosts } from '@/lib/hashnode'
 
 export default async function DashboardPage() {
+  const recentPosts = await getRecentPosts(process.env.HASHNODE_USERNAME!)
+  
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <ErrorBoundary>
         <GitHubSection />
       </ErrorBoundary>
@@ -18,6 +23,8 @@ export default async function DashboardPage() {
       <ErrorBoundary>
         <YouTubeSection />
       </ErrorBoundary>
+      <HashnodeStats />
+      <RecentPosts posts={recentPosts} />
     </div>
   )
 }

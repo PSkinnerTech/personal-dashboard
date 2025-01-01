@@ -7,6 +7,7 @@ declare global {
         YOUTUBE_CHANNEL_ID: string
         NODE_ENV: 'development' | 'production' | 'test'
         VERCEL_URL?: string
+        HASHNODE_USERNAME: string
       }
     }
   }
