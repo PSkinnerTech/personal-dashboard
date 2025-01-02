@@ -1,4 +1,5 @@
-import { ErrorBoundary, ErrorCard } from './components/ErrorBoundary'
+import { ErrorBoundary } from './components/ErrorBoundary'
+import { ErrorCard } from './components/ErrorCard'
 import { getCommits, getContributionData, getUserProfile, getIssues, getPullRequests, getCodeReviews } from '@/lib/github'
 import { getDateRanges } from '@/lib/utils/dateUtils'
 import { StatsCard } from './components/StatsCard'
@@ -12,19 +13,30 @@ import { RecentPosts } from './components/hashnode/RecentPosts'
 import { getRecentPosts } from '@/lib/hashnode'
 
 export default async function DashboardPage() {
-  const recentPosts = await getRecentPosts(process.env.HASHNODE_USERNAME!)
+  const recentPosts = await getRecentPosts()
   
   return (
     <div className="space-y-8">
-      <ErrorBoundary>
+      <ErrorBoundary fallback={
+        <div className="text-sm text-muted-foreground">
+          GitHub data temporarily unavailable (API rate limit exceeded)
+        </div>
+      }>
         <GitHubSection />
       </ErrorBoundary>
       
-      <ErrorBoundary>
+      <ErrorBoundary fallback={
+        <div className="text-sm text-muted-foreground">
+          YouTube data temporarily unavailable (API quota exceeded)
+        </div>
+      }>
         <YouTubeSection />
       </ErrorBoundary>
-      <HashnodeStats />
-      <RecentPosts posts={recentPosts} />
+
+      <ErrorBoundary>
+        <HashnodeStats />
+        <RecentPosts posts={recentPosts} />
+      </ErrorBoundary>
     </div>
   )
 }
@@ -148,7 +160,7 @@ async function GitHubSection() {
 
 async function YouTubeSection() {
   try {
-    const [channelStats, recentVideos] = await Promise.all([
+    const [channelStats, recentVideos] = await Promise.allSettled([
       getChannelStats(process.env.YOUTUBE_CHANNEL_ID!),
       getRecentVideos(process.env.YOUTUBE_CHANNEL_ID!)
     ])
@@ -156,13 +168,26 @@ async function YouTubeSection() {
     return (
       <div className="mt-8 space-y-8">
         <h2 className="text-2xl font-bold text-center">YouTube Analytics</h2>
-        <ChannelStats stats={channelStats} />
+        <ChannelStats 
+          stats={channelStats.status === 'fulfilled' ? channelStats.value : {
+            subscriberCount: 0,
+            viewCount: 0,
+            videoCount: 0,
+            lastUpdated: new Date().toISOString()
+          }} 
+        />
         <div className="mt-12">
-          <RecentVideos videos={recentVideos} />
+          <RecentVideos 
+            videos={recentVideos.status === 'fulfilled' ? recentVideos.value : []} 
+          />
         </div>
       </div>
     )
   } catch (error) {
-    return <ErrorCard error={error instanceof Error ? error : new Error('Failed to load YouTube data')} />
+    return (
+      <div className="text-sm text-muted-foreground p-4 text-center">
+        YouTube data temporarily unavailable (API quota exceeded). Please try again later.
+      </div>
+    )
   }
 } 

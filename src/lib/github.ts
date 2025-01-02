@@ -23,14 +23,11 @@ export async function getCommits(
       q: `author:${username} author-date:${since.toISOString().split('T')[0]}..${until.toISOString().split('T')[0]}`,
       per_page: 1
     })
-    
+
     return data.total_count
   } catch (error) {
-    if (error instanceof Error) {
-      console.error('GitHub API Error:', error)
-      throw new Error(`Failed to fetch commits: ${error.message}`)
-    }
-    throw error
+    console.error('GitHub API Error:', error)
+    return 0
   }
 }
 

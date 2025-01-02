@@ -37,17 +37,23 @@ export async function getHashnodeProfile(username: string): Promise<HashnodeProf
   return data.data.user
 }
 
-export async function getHashnodeStats(username: string): Promise<HashnodeStats> {
+interface HashnodePostEdgeNode {
+  node: {
+    views: number
+  }
+}
+
+export async function getHashnodeStats(): Promise<HashnodeStats> {
   const query = `
-    query GetUserStats($username: String!) {
-      user(username: $username) {
-        publications(first: 1) {
+    query Publication {
+      publication(host: "blog.patrickskinner.tech") {
+        postsCount: posts(first: 0) {
+          totalDocuments
+        }
+        postsViews: posts(first: 1) {
           edges {
             node {
-              posts(first: 0) {
-                totalDocuments
-              }
-              followersCount
+              views
             }
           }
         }
@@ -62,23 +68,21 @@ export async function getHashnodeStats(username: string): Promise<HashnodeStats>
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${process.env.HASHNODE_ACCESS_TOKEN}`
       } as HeadersInit,
-      body: JSON.stringify({
-        query,
-        variables: { username }
-      })
+      body: JSON.stringify({ query })
     }).then(res => res.json())
 
     if (data.errors) {
-      console.error('Hashnode API Errors:', data.errors)
-      throw new Error('Failed to fetch Hashnode stats')
+      throw new Error(data.errors[0]?.message || 'Failed to fetch Hashnode stats')
     }
 
-    const publication = data.data.user.publications.edges[0].node
+    const publication = data.data.publication
+    const totalViews = publication.postsViews.edges.reduce((acc: number, edge: HashnodePostEdgeNode) => acc + (edge.node.views || 0), 0)
+
     return {
-      totalPosts: publication.posts.totalDocuments || 0,
-      totalViews: 0,
+      totalPosts: publication.postsCount.totalDocuments,
+      totalViews: totalViews,
       totalReactions: 0,
-      followers: publication.followersCount || 0
+      followers: 0
     }
   } catch (error) {
     console.error('Hashnode API Error:', error)
@@ -106,7 +110,7 @@ interface HashnodePostEdge {
   }
 }
 
-export async function getRecentPosts(username: string): Promise<HashnodePost[]> {
+export async function getRecentPosts(): Promise<HashnodePost[]> {
   const query = `
     query Publication {
       publication(host: "blog.patrickskinner.tech") {

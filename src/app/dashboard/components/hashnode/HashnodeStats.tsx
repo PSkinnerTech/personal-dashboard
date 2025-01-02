@@ -2,7 +2,7 @@ import { getHashnodeStats } from '@/lib/hashnode'
 import { StatsCard } from '../StatsCard'
 
 export async function HashnodeStats() {
-  const stats = await getHashnodeStats(process.env.HASHNODE_USERNAME!)
+  const stats = await getHashnodeStats()
   
   return (
     <div className="space-y-4">

@@ -1,26 +1,33 @@
 'use client'
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { AlertCircle } from 'lucide-react'
+import { Component, type ReactNode } from 'react'
+import { ErrorCard } from './ErrorCard'
 
-export function ErrorCard({ error }: { error: Error }) {
-  return (
-    <Card className="border-destructive">
-      <CardHeader>
-        <div className="flex items-center gap-2 text-destructive">
-          <AlertCircle className="h-5 w-5" />
-          <h3 className="font-semibold">Error Loading Dashboard</h3>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <p className="text-muted-foreground">
-          {error.message || 'Failed to load dashboard data. Please try again later.'}
-        </p>
-      </CardContent>
-    </Card>
-  )
+interface ErrorBoundaryProps {
+  children: ReactNode
+  fallback?: ReactNode
 }
 
-export function ErrorBoundary({ children }: { children: React.ReactNode }) {
-  return <>{children}</>
+interface ErrorBoundaryState {
+  hasError: boolean
+  error: Error | null
+}
+
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props)
+    this.state = { hasError: false, error: null }
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || <ErrorCard error={this.state.error!} />
+    }
+
+    return this.props.children
+  }
 } 
