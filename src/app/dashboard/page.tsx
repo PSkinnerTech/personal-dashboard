@@ -183,7 +183,7 @@ async function YouTubeSection() {
         </div>
       </div>
     )
-  } catch (error) {
+  } catch {
     return (
       <div className="text-sm text-muted-foreground p-4 text-center">
         YouTube data temporarily unavailable (API quota exceeded). Please try again later.
